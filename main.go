@@ -1,7 +1,7 @@
 /*
  * @Author: cloudyi.li
  * @Date: 2022-08-23 19:18:14
- * @LastEditTime: 2022-08-24 07:39:08
+ * @LastEditTime: 2022-08-24 10:59:58
  * @LastEditors: cloudyi.li
  * @FilePath: /timealfred/main.go
  */
@@ -20,22 +20,27 @@ import (
 func main() {
 	var t time.Time
 	args := strings.Join(os.Args[1:], " ")
-	tsu, _ := strconv.ParseInt(args, 10, 64)
-	// // fmt.Println(strings.Join(args, " "))
-	if len(args) == 10 {
-		t = time.Unix(tsu, 0)
-	} else if len(args) == 13 {
-		t = time.UnixMilli(tsu)
-	} else {
-		t = time.Now()
+	t, err := time.Parse("2006-01-02 15:04:05", args)
+	if err != nil {
+		t, err = time.Parse("20060102150405", args)
+		if err != nil {
+			t, err = time.Parse("2006-01-02T15:04:05Z07:00", args)
+			if err != nil {
+				tsu, err := strconv.ParseInt(args, 10, 64)
+				if len(args) == 10 {
+					t = time.Unix(tsu, 0)
+				} else if len(args) == 13 {
+					t = time.UnixMilli(tsu)
+				} else {
+					t = time.Now()
+				}
+				if err != nil {
+					t = time.Now()
+				}
+			}
+		}
 	}
-	//
-	// args := "1661297475"
 
-	// t := time.Now()
-	// fmt.Println(t.Unix())
-	// fmt.Println(strconv.FormatInt(t.Unix(), 10))
-	fmt.Printf("%d年%d月%d日%d时%d分%d秒", t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second())
 	output := alfred.OutputXml(times.Times(t))
 	fmt.Println(output)
 }

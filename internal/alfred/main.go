@@ -1,7 +1,7 @@
 /*
  * @Author: cloudyi.li
  * @Date: 2021-12-22 16:20:28
- * @LastEditTime: 2022-08-24 07:06:34
+ * @LastEditTime: 2022-08-24 11:11:43
  * @LastEditors: cloudyi.li
  * @FilePath: /timealfred/internal/alfred/main.go
  */
@@ -35,7 +35,7 @@ func OutputXml(item_list []map[string]string) (resultstring string) {
 		m.Uid = item_list[i]["uid"]
 		m.Title = item_list[i]["title"]
 		m.SubTitle = item_list[i]["subtitle"]
-		m.Icon = "icon"
+		m.Icon = "./bin/timer-line.png"
 	}
 
 	data, err := xml.MarshalIndent(&items, " ", "\t")
